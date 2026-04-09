@@ -1,6 +1,6 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter 
 from langchain_openai import OpenAIEmbeddings
-
+import faiss
 
 
 def chunk_transcript(processed_transcript, chunk_size=200, chunk_overlap=20):
@@ -23,3 +23,7 @@ def create_embeddings(chunks, embedding_model=None):
     embeddings = embedding_model.embed_documents(chunks)
     return embeddings
 
+def create_faiss_index(chunks, embedding_model):
+   
+    # Use the FAISS library to create an index from the provided text chunks
+    return faiss.from_texts(chunks, embedding_model)
