@@ -1,7 +1,8 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter 
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain.prompts import PromptTemplate
+
+
 
 
 def chunk_transcript(processed_transcript, chunk_size=200, chunk_overlap=20):
@@ -57,5 +58,13 @@ Transcript:
         input_variables=["transcript"],
         template=template
     )
+
+
+def retrieve(query, faiss_index, k=7):
+   
+    retrieved = faiss_index.similarity_search(query, k=k)
+    return retrieved
+
+
 
 
