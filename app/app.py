@@ -11,4 +11,5 @@ transcript = fetch_youtube.get_transcript("https://www.youtube.com/watch?v=iGeXG
 transcript = fetch_youtube.preprocesstranscript(transcript)
 chunks = rag.chunk_transcript(transcript)
 
-embeddings = rag.create_embeddings(chunks)
+faiss_index = rag.create_faiss_index(chunks)
+print(faiss_index)
