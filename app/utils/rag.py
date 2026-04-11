@@ -14,10 +14,7 @@ def chunk_transcript(processed_transcript, chunk_size=200, chunk_overlap=20):
     chunks = text_splitter.split_text(processed_transcript)
     return chunks
 
-def create_faiss_index(chunks, embedding_model):
-   
-    # Use the FAISS library to create an index from the provided text chunks
-    return faiss.from_texts(chunks, embedding_model)
+
 
 def create_faiss_index(chunks, embedding_model=None):
     # Create embeddings for each chunk using the provided embedding model
