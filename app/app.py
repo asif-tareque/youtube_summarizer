@@ -1,6 +1,6 @@
-import utils.fetch_youtube as fetch_youtube
-import utils.rag as rag
-import utils.prompts as prompts
+import app.utils.fetch_youtube as fetch_youtube
+import app.utils.rag as rag
+import app.utils.prompts as prompts
 from dotenv import load_dotenv
 import os
 from openai import OpenAI
@@ -39,7 +39,10 @@ def run_summary(prompt: str):
     content = response.choices[0].message.content
     return json.loads(content)
 
-summary_prompt = prompts.create_summary_prompt().format(transcript=transcript)
+def get_summary(url):
+    transcript = fetch_youtube.get_transcript(url)
+    transcript = fetch_youtube.preprocesstranscript(transcript)
+    summary_prompt = prompts.create_summary_prompt().format(transcript=transcript)
 
-summary = run_summary(summary_prompt)
-print(summary)
+    summary = run_summary(summary_prompt)
+    return summary

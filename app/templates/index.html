@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YouTube Summarizer</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>YouTube Summarizer</h1>
+            <p>Paste a YouTube URL and generate a clean AI summary.</p>
+        </div>
+
+        <form action="/summarize" method="post" class="form-card">
+            <label for="youtube_url">YouTube URL</label>
+            <input
+                id="youtube_url"
+                type="text"
+                name="youtube_url"
+                placeholder="https://www.youtube.com/watch?v=..."
+                value="{{ youtube_url if youtube_url else '' }}"
+                required
+            />
+
+            <label for="mode">Summary Mode</label>
+            <select id="mode" name="mode">
+                <option value="brief" {% if mode == "brief" %}selected{% endif %}>Brief</option>
+                <option value="detailed" {% if mode == "detailed" %}selected{% endif %}>Detailed</option>
+                <option value="study_notes" {% if mode == "study_notes" %}selected{% endif %}>Study Notes</option>
+                <option value="actionable" {% if mode == "actionable" %}selected{% endif %}>Actionable</option>
+            </select>
+
+            <button type="submit">Summarize Video</button>
+        </form>
+
+        {% if error %}
+        <div class="card error-card">
+            <h2>Error</h2>
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+
+        {% if result %}
+        <div class="results-grid">
+            <div class="card">
+                <h2>Summary</h2>
+                <p>{{ result.summary }}</p>
+            </div>
+
+            <div class="card">
+                <h2>Key Points</h2>
+                <ul>
+                    {% for point in result.key_points %}
+                    <li>{{ point }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>Action Items</h2>
+                <ul>
+                    {% for item in result.action_items %}
+                    <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {% if result.notable_quotes %}
+            <div class="card">
+                <h2>Notable Quotes</h2>
+                <ul>
+                    {% for quote in result.notable_quotes %}
+                    <li>{{ quote }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if result.topic_tags %}
+            <div class="card">
+                <h2>Topics</h2>
+                <div class="tags">
+                    {% for tag in result.topic_tags %}
+                    <span class="tag">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
